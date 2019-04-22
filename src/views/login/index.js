@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import * as types from '../../redux/constant/login';
 import { connect } from 'react-redux';
-import { userLogin } from '../../redux/action/login';
+import { userLogin, getUserInfo } from '../../redux/action/login';
+import css from './login.module.scss'
 
 
 class Login extends Component{
@@ -31,7 +32,8 @@ class Login extends Component{
 
 
   jumpToHome = () => {
-    this.props.history.push({pathname: '/home', state: {id:1, name: '战三'}});
+    // this.props.history.push({pathname: '/home', state: {id:1, name: '战三'}});
+    this.props.getUserInfo();
   };
 
   accountChange = (e) =>{
@@ -65,17 +67,18 @@ class Login extends Component{
 
   render() {
     const {id, name} = this.state;
-    let {  code, message } = this.props;
+    let {  code, message, userData } = this.props;
     return <div>
       <h1>我是Login页面</h1>
       <input type={'text'} onChange={this.accountChange}/>
       <input type={'text'} onChange={this.passwordChange}/>
-      <button onClick={this.jumpToHome.bind()}>跳转</button>
-      <button onClick={this.handleSubmit.bind()}>登录</button>
+      <button onClick={() =>this.jumpToHome()}>跳转</button>
+      <button onClick={() =>this.handleSubmit()}>登录</button>
       <p>{id}</p>
-      <p>{name}</p>
-      <p>code: {code}</p>
+      <p >{name}</p>
+      <p className="foo">code: {code}</p>
       <p>message: {message}</p>
+      <p className={css.code}>userData: {JSON.stringify(userData)}</p>
     </div>
   }
 
@@ -85,8 +88,9 @@ class Login extends Component{
 const mapStateToProps = (state, ownProps) => {
   console.log('state:', state)
   return {
-    code: state.LoginReducer && state.LoginReducer.code,
-    message: state.LoginReducer && state.LoginReducer.msg,
+    code: state.LoginReducer && state.LoginReducer.userData.code,
+    message: state.LoginReducer && state.LoginReducer.userData.msg,
+    userData: state.LoginReducer && state.LoginReducer.userData
   }
 };
 
@@ -101,6 +105,9 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
       /*dispatch((dispatch, getState) => {
           dispatch({ type: 'USER_LOGIN_LOADING', data: data })
       )*/
+    },
+    getUserInfo () {
+      dispatch(getUserInfo())
     }
   }
 };

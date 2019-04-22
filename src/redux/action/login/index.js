@@ -42,3 +42,13 @@ export const userLogin = (data) => dispatch =>{
     dispatch(loginExamine({code: 203, msg:'审核中'}))
   }
 };
+
+const _getUserInfo = () =>{
+  return {
+    type: 'GET_USER_INFO'
+  }
+};
+
+export const getUserInfo = () => dispatch =>{
+  dispatch(_getUserInfo());
+};

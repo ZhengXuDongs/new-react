@@ -1,0 +1,14 @@
+.code {
+  color: pink;
+  font-size: 20px;
+}
+
+:global{
+  .foo{
+    background: blue;
+  }
+}
+
+:local{
+
+}
